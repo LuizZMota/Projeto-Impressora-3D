@@ -1,0 +1,270 @@
+import math
+op = 0
+tarifa_aluno_1h = 0
+hora_inicio = 0
+min_inicio = 0
+tipo_user = 0
+tempo_total_hora = 0
+tarifa_aluno_ad = 0
+tarifa_prof_1h = 0
+tarifa_prof_ad = 0
+tarifa_visit_1h = 0
+tarifa_visit_ad = 0
+tarifa_aluno_ad_calc = 0
+tarifa_prof_ad_calc = 0
+tarifa_visit_ad_calc = 0
+contador_aluno = 0
+contador_prof = 0
+contador_visit = 0
+hora_aluno = 0
+opcao_atual = 1
+impressao = 0
+saldo_dia = 0
+temp = 0
+hora_visit = 0
+hora_prof = 0
+valor_aluno = 0
+valor_prof = 0
+valor_visit = 0
+media_aluno = 0
+media_prof = 0
+pag = 0
+media_visit = 0
+tempo_medio = 0
+tempo_total = 0
+aluno = 0
+prof = 0
+visit = 0
+horas = 0
+media_aluno_tempo = 0
+media_prof_tempo = 0
+media_visit_tempo = 0
+Hora_media_aluno = 0
+Min_media_aluno = 0
+Hora_media_prof = 0
+Min_media_prof = 0
+Hora_media_visit = 0
+Min_media_visit = 0
+while op != 6:
+  print("\n-----------------------------------------------------------------")  
+  print("\n\t\tSistemas de Controle de uso de Impressora 3D")
+  print("\n-----------------------------------------------------------------")
+  print("\n1 - Cadastrar Tarifas \n2 - Registrar Início da Impressão \n3 - Registrar Término da Impressão \n4 - Gerar Relátorio diário \n5 - Gerar Relatório por tipo de usuário \n6 - Sair")
+  op = int(input("\nEscolha uma opção (1 ao 6): "))
+  print("\n-----------------------------------------------------------------")
+  print()
+  if op == 1 and opcao_atual == 1:
+    #variável opcao_atual foi utilizada para que o usuário selecione as opções na ordem correta, toda vez que ele aciona a opção seguinte, a variável aumenta 1 número, sendo este o requisito para acessar a proxima opção.
+    tarifa_aluno_1h = float(input("Tarifa por hora para alunos da graduação: "))
+    tarifa_aluno_ad = float(input("Tarifa de horas adicionais para alunos da graduação: "))
+    tarifa_prof_1h = float(input("Tarifa por hora para professores: "))
+    tarifa_prof_ad = float(input("Tarifa de horas adicionais para professores: "))
+    tarifa_visit_1h = float(input("Tarifa por hora para visitantes: "))
+    tarifa_visit_ad = float(input("Tarifa de horas adicionais para visitantes: "))
+    opcao_atual += 1
+  elif op == 2 and opcao_atual >= 2:
+    nome = input("Digite seu nome: ")
+    email = input("Digite seu e-mail: ")
+    tipo_user = input("Digite seu tipo de usuário (a - aluno; p - professor; v - visitante): ")
+    if tipo_user == "a":
+      contador_aluno += 1 #contador para quantidade de alunos no final
+    elif tipo_user == "p":
+      contador_prof += 1 #contador para quantidade de professores no final
+    elif tipo_user == "v": 
+      contador_visit += 1 #contador para quantidade de visitantes no final
+    data = input("Digite a data de hoje (DD/MM/AAAA): ")
+    hora_inicio = int(input("Digite a hora atual(0-23): "))
+    min_inicio = int(input("Digite os minutos atuais(0-59):"))
+    print("\n-----------------------------------------------------------------")
+    print("\n\t\t\t\t\tRecibo de Entrada")
+    print("\n-----------------------------------------------------------------")
+    print(f"\nNome: {nome} \nEmail: {email} \nTipo de Usuário: {tipo_user} \nData: {data} \nHora de início: {hora_inicio} \nMinuto de início: {min_inicio}")
+    opcao_atual += 1
+
+  elif op == 3 and opcao_atual >= 3:
+    hora_termino = int(input("Digite a hora atual(0-23): "))
+    min_termino = int(input("Digite os minutos atuais(0-59): "))
+    tempo_total_inicio = int((hora_inicio*60) + min_inicio) 
+    tempo_total_termino = int((hora_termino*60) + min_termino)
+    tempo_total_hora = int(tempo_total_termino - tempo_total_inicio) 
+    #tudo em minutos para facilitar na conta do tempo de uso resultante
+    Hora = tempo_total_hora // 60
+    Min = tempo_total_hora%60
+    horas = float(tempo_total_hora/60)
+    hora_extra = math.ceil(horas-1) 
+    #arredondando a divisão para cima e tirando 1 unidade, pois esta já sera cobrada na tarifa de 1 hora inicial
+    tarifa_aluno_ad_calc = tarifa_aluno_1h + (hora_extra*tarifa_aluno_ad)
+    tarifa_prof_ad_calc = tarifa_prof_1h + (hora_extra*tarifa_prof_ad)
+    tarifa_visit_ad_calc = tarifa_visit_1h + (hora_extra*tarifa_visit_ad)
+    print("\n-----------------------------------------------------------------")
+    print("\n\t\t\t\t\tRecibo de Saída")
+    print("\n-----------------------------------------------------------------")
+    print()
+    print(f"Tempo de uso: {Hora}:{Min}")
+    valor_total = 0
+    if tipo_user == "a":
+      hora_aluno += tempo_total_hora #contador para horas totais dos alunos 
+      if Hora == 0:
+        print(f"Tarifa de acordo com tempo de uso: {tarifa_aluno_1h}")
+        valor_total = float(tarifa_aluno_1h)
+        print(f"Valor Total = {valor_total}")
+      if Hora == 1 and Min == 0: #1 hora e 0 minutos ainda se considera apenas 1 hora de uso.
+        print(f"Tarifa de acordo com tempo de uso: {tarifa_aluno_1h}")
+        valor_total = float(tarifa_aluno_1h)
+        print(f"Valor Total = {valor_total}")
+        
+      if Hora >= 1 and Min >= 0:
+        print(f"Tarifa de acordo com tempo de uso: {tarifa_aluno_1h}")
+        print(f"Tarifa de acordo com tempo adicional: {hora_extra*tarifa_aluno_ad}")
+        valor_total = float(tarifa_aluno_ad_calc) 
+        print(f"Valor Total = {valor_total}")
+        
+    if tipo_user == "p":
+      hora_prof += tempo_total_hora #contador para horas totais dos profs
+      if Hora == 0:
+        print(f"Tarifa de acordo com tempo de uso: {tarifa_prof_1h}")
+        valor_total = float(tarifa_prof_1h)
+        print(f"Valor Total = {valor_total}")
+        
+      if Hora == 1 and Min == 0:
+        print(f"Tarifa de acordo com tempo de uso: {tarifa_prof_1h}")
+        valor_total = float(tarifa_prof_1h)
+        print(f"Valor Total = {valor_total}")
+        
+      if Hora >= 1 and Min >= 0:
+        print(f"Tarifa de acordo com tempo de uso: {tarifa_prof_1h}")
+        print(f"Tarifa de acordo com tempo adicional: {hora_extra*tarifa_prof_ad}")
+        valor_total = float(tarifa_prof_ad_calc)
+        print(f"Valor Total = {valor_total}")
+        
+    if tipo_user == "v":
+      hora_visit += tempo_total_hora #contador para horas totais dos visitantes
+      if Hora == 0:
+        print(f"Tarifa de acordo com tempo de uso: {tarifa_visit_1h}")
+        valor_total = float(tarifa_visit_1h)
+        print(f"Valor Total = {valor_total}")
+       
+      if Hora == 1 and Min == 0:
+        print(f"Tarifa de acordo com tempo de uso: {tarifa_visit_1h}")
+        valor_total = float(tarifa_visit_1h)
+        print(f"Valor Total = {valor_total}")
+       
+      if Hora >= 1 and Min >= 0:
+        print(f"Tarifa de acordo com tempo de uso: {tarifa_visit_1h}")
+        print(f"Tarifa de acordo com tempo adicional: {hora_extra*tarifa_visit_ad}")
+        valor_total = float(tarifa_visit_ad_calc)
+        print(f"Valor Total = {valor_total}")
+        
+        #coloquei os valores que virão das impressões para variável "valor_total", utilizando ela para aplicar as mudanças de valor de acordo com a forma de pagamento, facilitando o cálculo e a lógica.
+    
+    valor = 0 #declarando essa variável para ser usada como valor final
+    
+    while True:
+      print("\nForma de pagamento: \n1 - PIX (5% de desconto)\n2 - Cartão de débito \n3 - Cartão de crédito (5% adicional)")
+      pag = int(input("\nQual será a forma de pagamento: "))
+      #while para todas as vezes que o usuário não escolher as opções, este menu retorne.
+      if pag == 1 or pag == 2 or pag == 3:              
+        if pag == 1 and tipo_user == "a":
+          valor = valor_total-(valor_total*0.05) #também podendo ser valor_total*0.95
+          print(f"Preço: {valor}") 
+          valor_aluno += valor
+          break
+        elif pag == 1 and tipo_user == "p":
+          valor = valor_total-(valor_total*0.05) 
+          print(f"Preço: {valor}") 
+          valor_prof += valor
+          break
+        elif pag == 1 and tipo_user == "v":
+          valor = valor_total-(valor_total*0.05) 
+          print(f"Preço: {valor}") 
+          valor_visit += valor
+          break
+        elif pag == 2 and tipo_user == "a":
+          valor = valor_total
+          print(f"Preço: {valor}")
+          valor_aluno += valor
+          break
+        elif pag == 2 and tipo_user == "p":
+          valor = valor_total
+          print(f"Preço: {valor}")
+          valor_prof += valor
+          break
+        elif pag == 2 and tipo_user == "v":
+          valor = valor_total
+          print(f"Preço: {valor}")
+          valor_visit += valor
+          break
+        elif pag == 3 and tipo_user == "a":
+          valor = valor_total+(valor_total*0.05) #também podendo ser valor_total*1.05
+          print(f"Preço: {valor}")
+          valor_aluno += valor
+          break
+        elif pag == 3 and tipo_user == "p":
+          valor = valor_total+(valor_total*0.05)
+          print(f"Preço: {valor}")
+          valor_prof += valor
+          break
+        elif pag == 3 and tipo_user == "v":
+          valor = valor_total+(valor_total*0.05)
+          print(f"Preço: {valor}")
+          valor_visit += valor
+          break
+      else:
+          print("Opção inválida. Digite novamente a opção correta exibida nas opções")
+
+    impressao += 1 #contador para que toda vez que o processo de cadastro e pagamento se encerre, aumente 1 totalizando posteriormente a quantidade de impressões totais
+    
+    opcao_atual += 1
+    saldo_dia += valor 
+    tempo_total += tempo_total_hora
+    
+  elif op == 4 and opcao_atual >= 4:
+    tempo_medio = float(tempo_total/impressao)
+    temp += int(tempo_medio)
+    hora1 = temp//60
+    min1 = temp%60
+    print("\t\t\t\t\t\tRelatório Diário")
+    print("\n-----------------------------------------------------------------")
+    print(f"\nNúmero de impressões realizadas no dia: {impressao}")
+    print(f"Valor total rentabilizado no dia: %.2f" %(saldo_dia))
+    print(f"Tempo médio gasto nas impressões: {hora1}:{min1}")
+    opcao_atual += 1
+
+  elif op == 5 and opcao_atual >= 5:
+    print("\t\t\t\tRelatório por Tipo de Usuário")
+    print("\n-----------------------------------------------------------------")
+    if contador_aluno>contador_prof and contador_aluno>contador_visit:
+      print("\nO tipo de usuário que mais utilizou a impressora foi os alunos.")
+    if contador_prof>contador_aluno and contador_prof>contador_visit:
+      print("\nO tipo de usuário que mais utilizou a impressora foi os professores.")
+    if contador_visit>contador_aluno and contador_visit>contador_prof:
+      print("\nO tipo de usuário que mais utilizou a impressora foi os visitantes.")
+    if contador_aluno != 0: #diferente de zero pois caso gere o relatório e não tenha algum dos usuários, ele dividiria por zero, gerando erro no código.
+      media_aluno = valor_aluno/contador_aluno
+      media_aluno_tempo = int(hora_aluno/contador_aluno)
+    if contador_prof != 0:
+      media_prof = valor_prof/contador_prof
+      media_prof_tempo = int(hora_prof/contador_prof)
+    if contador_visit != 0:  
+      media_visit = valor_visit/contador_visit
+      media_visit_tempo = int(hora_visit/contador_visit)
+    print("A média de valor gasto pelos alunos foi de R$ %.2f" %(media_aluno))
+    print("A média de valor gasto pelos professores foi de R$ %.2f" %(media_prof))
+    print("A média de valor gasto pelos visitantes foi de R$ %.2f" %(media_visit)) 
+    Hora_media_aluno = int(media_aluno_tempo//60)
+    Min_media_aluno = int(media_aluno_tempo%60)
+    Hora_media_prof = int(media_prof_tempo//60)
+    Min_media_prof = int(media_prof_tempo%60)
+    Hora_media_visit = int(media_visit_tempo//60)
+    Min_media_visit = int(media_visit_tempo%60)
+    print(f"A média de tempo dos alunos na impressora foi de {Hora_media_aluno}:{Min_media_aluno}")
+    print(f"A média de tempo dos professores na impressora foi de {Hora_media_prof}:{Min_media_prof}")
+    print(f"A média de tempo dos visitantes na impressora foi de {Hora_media_visit}:{Min_media_visit}")
+
+  elif op == 6:
+    print("Agradeço por utilizar meus serviços.")
+
+  else:
+   print("Opção inválida ou fora de ordem. Por favor, faça o registro na ordem demonstrada no \nmenu selecionando as opções exibidas.") 
+   input("\nPressione Enter para continuar...") #caso ele escolhesse uma opção fora de ordem no menu ou um número fora das opções.
+print("Desligando...") #finalizando o while inicial.
