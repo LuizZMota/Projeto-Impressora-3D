@@ -25,3 +25,5 @@ Menu:
 4. Gerar Relatório diário
 5. Gerar Relatório por tipo de usuário
 6. Sair
+
+Vale destacar também que esse exercício foi para testar minhas habilidades com estruturas de repetição e condicionais, sem o uso de listas e funções, que deixariam o código muito mais simples, lógico e prático.
